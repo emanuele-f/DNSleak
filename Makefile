@@ -1,4 +1,4 @@
-.PHONY: default clean install
+.PHONY: default clean install uninstall
 
 default: dnsleak
 
@@ -15,5 +15,10 @@ clean:
 	rm -f dnsleak
 	rm -f *.o
 
-install:
-	@echo "TODO"
+install: dnsleak
+	$(shell [ -z "$$PREFIX" ] && PREFIX=/usr; target="$$PREFIX/bin/dnsleak"; cp dnsleak "$$target" && echo "@echo Installed as '$$target'")
+	@:
+
+uninstall:
+	$(shell [ -z "$$PREFIX" ] && PREFIX=/usr; target="$$PREFIX/bin/dnsleak"; rm "$$PREFIX/bin/dnsleak" && echo "@echo Uninstalled '$$target'")
+	@:
