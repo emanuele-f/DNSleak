@@ -96,7 +96,7 @@ static void pcap_packet_callback(u_char *args,
 
 static void exit_callback() {
   if (config.verbose)
-    printf("%u packets captured, %u leaks / %u DNS requests\n",
+    printf("%u DNS packets captured, %u leaks / %u DNS requests\n",
             total_packets, names_get_marked(), dns_sent);
 
   if (workflow) {
@@ -128,7 +128,7 @@ static void usage(char * arg0) {
           " -c count      number of DNS requests to send (default %u)\n"
           " -i interval   millis between DNS requests send (default %u)\n"
           " -t time       extra millis to wait for a DNS packet to show up (default %u)\n"
-          " -l leaks      maximum number of leaks to exit program (default %u)\n"
+          " -l leaks      maximum number of leaks to exit, 0 is unbound (default %u)\n"
           " -v            print debug messages\n"
           "\nCopyright Emanuele Faranda <black.silver@hotmail.it>\n",
           basename(arg0),
@@ -191,6 +191,12 @@ static struct timespec millis_to_timespec(u_int millis) {
 
   return tspec;
 };
+
+static int too_much_leaks() {
+  if (config.stop_after_n_leaks == 0)
+    return 0;
+  return names_get_marked() >= config.stop_after_n_leaks;
+}
 
 static pcap_t * open_device_live(const char * dev) {
   char pcap_error_buffer[PCAP_ERRBUF_SIZE];
@@ -339,10 +345,7 @@ int main(int argc, char **argv) {
   
   const struct timespec const_time = millis_to_timespec(config.dns_request_interval_ms);
 
-  for (int i=0; i<config.dns_request_count &&
-            running &&
-            names_get_marked() < config.stop_after_n_leaks;
-            i++) {
+  for (int i=0; i<config.dns_request_count && running && !too_much_leaks(); i++) {
     struct sigevent sevp;
     memset(&sevp, 0, sizeof(sevp));
     sevp.sigev_notify = SIGEV_NONE;
@@ -373,7 +376,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (names_get_marked() < config.stop_after_n_leaks) {
+  if (!too_much_leaks()) {
     // wait extra time
     struct timespec extra_time = millis_to_timespec(config.capture_extra_time_ms);
     if ((rv = nanosleep(&extra_time, NULL)) != 0) {
