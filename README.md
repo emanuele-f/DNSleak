@@ -25,7 +25,7 @@ distribution provided package, which could be too outdated.
 
 In order to compile and install run:
 ```
-make && PREFIX=/usr make install
+make && make PREFIX=/usr install
 ```
 
 To execute the command, just run ```sudo dnsleak```, followed by the network interface you are

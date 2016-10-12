@@ -15,10 +15,11 @@ clean:
 	rm -f dnsleak
 	rm -f *.o
 
+install: PREFIX ?= /usr
 install: dnsleak
-	$(shell [ -z "$$PREFIX" ] && PREFIX=/usr; target="$$PREFIX/bin/dnsleak"; cp dnsleak "$$target" && echo "@echo Installed as '$$target'")
-	@:
+	mkdir -p "$(DESTDIR)$(PREFIX)/bin"
+	cp ./dnsleak "$(DESTDIR)$(PREFIX)/bin"
 
+uninstall: PREFIX ?= /usr
 uninstall:
-	$(shell [ -z "$$PREFIX" ] && PREFIX=/usr; target="$$PREFIX/bin/dnsleak"; rm "$$PREFIX/bin/dnsleak" && echo "@echo Uninstalled '$$target'")
-	@:
+	rm "$(DESTDIR)$(PREFIX)/bin/dnsleak"
