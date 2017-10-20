@@ -20,13 +20,12 @@ a leak is detected.
 Installation
 ------------
 
-You need the nDPI library to be installed system-wide in order to compile the program. Beware of using your
-distribution provided package, which could be too outdated.
-
 In order to compile and install run:
 ```
 make && make PREFIX=/usr install
 ```
+
+The supported nDPI version will be pulled and compiled automatically.
 
 To execute the command, just run ```sudo dnsleak```, followed by the network interface you are
 using to communicate "outside" (e.g. wlan0). Please note that this is *not* the tunnel interface used
@@ -37,7 +36,7 @@ Run the command without arguments to get the list of available options.
 Examples
 --------
 
-Quick test: 1 on leak, 0 otherwise
+Quick test: returns 1 if leaks are detected, 0 otherwise
 ```
 sudo dnsleak wlan0 | grep -c "=== Leaks detected ==="
 ```
