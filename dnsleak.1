@@ -1,0 +1,31 @@
+.TH dnsleak 1 "November  1 2017"
+.SH NAME
+dnsleak \- utility to test for DNS leaks
+.SH SYNOPSIS
+.B dnsleak
+.RI [ options ] " device"
+.SH DESCRIPTION
+This manual page documents briefly the
+.B dnsleak
+command.
+.PP
+\fBdnsleak\fP can detect a misconfigured system where DNS packets are leaked.
+Unlike many other web-based softwares, it works at the local computer level.
+No third party servers are used and DNS leak result is a true / false response.
+.SH OPTIONS
+A summary of options is included below.
+.TP
+.B -c count
+Number of DNS requests to send (default 10).
+.TP
+.B -i interval
+Milliseconds between DNS requests send (default 200).
+.TP
+.B -t time
+Extra millis to wait for a DNS packet to show up (default 1000).
+.TP
+.B \-l leaks
+Maximum number of leaks to exit, 0 is unbound (default 1).
+.TP
+.B \-v
+Print debug messages.
