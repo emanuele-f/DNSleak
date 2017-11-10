@@ -48,4 +48,4 @@ sudo dnsleak wlan0 -c 60 -i 5000 | grep -c "=== Leaks detected ==="
 Debian package
 --------------
 
-A debian package is maintained by @alexmyczko. See http://sid.ethz.ch/debian/dnsleak/ . See #3 for details.
+A debian package is maintained by @alexmyczko. See http://sid.ethz.ch/debian/dnsleak/ . See [#3](/../../issues/3) for details.
